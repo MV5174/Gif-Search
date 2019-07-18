@@ -6,14 +6,24 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Gif Search</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
 </head>
 <body>
+    <style>
+        form{
+            float: right;
+        }
+    </style>
     <h1>Gif Search!</h1>
+    <div id="buttonDiv"></div>
+    <form>
+            <span id="search">search: <input id="searchResults" type="text" ><input id="addSearch" type="submit"></span>
+    </form>
     <div id="gifDiv"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
     var topics = ["Bear", "Dog", "Squirrel", "Octopus", "Cat", "Lion", "Tiger", "Wolf"];
-    
+    console.log(topics);
     function makeButtons(){
         
 
@@ -26,11 +36,33 @@
 
             topicButton.text(topics[i]);
 
-            $("#gifDiv").append(topicButton);
+            $("#buttonDiv").append(topicButton);
         }
     };
+    function addSearch(){
+        var search = $("#searchResults").val();
+        console.log(search);
+        topics.push(search);
+        console.log(topics);
+        var topicAnimal = $("<p>");
+            topicAnimal.text(search);
+
+            var topicButton = $("<button>");
+            $(topicButton).attr("value", search);
+
+            topicButton.text(search);
+
+            $("#buttonDiv").append(topicButton);
+    }
+
     makeButtons();
-    
+
+    $("#addSearch").on("click", function(e){
+        e.preventDefault();
+        addSearch();
+        
+    })
+
     $("button").on("click", function(){
         $("img").detach();
         $("p").detach();
@@ -77,5 +109,6 @@
     
     
     </script>
+
 </body>
 </html>
