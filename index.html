@@ -63,7 +63,7 @@
         
     })
 
-    $("button").on("click", function(){
+    $(document).on("click", "button", function(){
         $("img").detach();
         $("p").detach();
         var animalSearch = $(this).attr("value");
