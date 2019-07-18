@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Gif Search</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Gif Search!</h1>
+    <div id="gifDiv"></div>
+    <script>
+    var topics = ["Bear", "Dog", "Squirrel", "Octopus", "Cat", "Lion", "Tiger", "Wolf"];
+    
+    function makeButtons(){
+        
+
+        for (var i= 0; i< topics.length; i++){
+            var topicAnimal = $("<p>");
+            topicAnimal.text(topics[i]);
+
+            var topicButton = $("<button>");
+            $(topicButton).attr("value", topics[i]);
+
+            topicButton.text(topics[i]);
+
+            $("#gifDiv").append(topicButton);
+        }
+    };
+    makeButtons();
+    
+    $("button").on("click", function(){
+        $("img").detach();
+        $("p").detach();
+        var animalSearch = $(this).attr("value");
+
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        animalSearch + "&api_key=BkaUZZWcFij6J7AoQj3WtPb1R2p9O6V9&limit=10";
+
+        console.log(queryURL);
+
+        $.ajax({
+        url: queryURL,
+        method: "GET"
+      }) 
+      .then(function(response){
+          var results = response.data;
+
+          for (var i = 0; i < results.length; i++) {
+
+            // Only taking action if the photo has an appropriate rating
+            if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
+            // Creating a div for the gif
+            var gifsDiv = $("<div>");
+
+            // Storing the result item's rating
+            var rating = results[i].rating;
+
+            // Creating a paragraph tag with the result item's rating
+            var p = $("<p>").text("Rating: " + rating);
+
+            // Creating an image tag
+            var animalImage = $("<img>");
+            
+            animalImage.attr("src", results[i].images.fixed_height.url);
+            }
+
+            gifsDiv.append(p);
+            gifsDiv.append(animalImage);
+
+            $("#gifDiv").append(gifsDiv);
+      }})
+      })
+
+    
+    
+    </script>
+</body>
+</html>
